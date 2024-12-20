@@ -1,0 +1,82 @@
+*.tgz
+**/logs/
+
+**/test-ledger/
+
+/forester/forester_venv/
+# CLI
+/cli/node_modules/
+/cli/build/
+/cli/cache/secret.txt
+/cli/cache/utxos.txt
+/cli/cache/signature.txt
+/cli/cache/user.txt
+/cli/lookupTable.txt
+/cli/build/cli.js
+/cli/build/lookupTable.txt
+
+**/light-test-cache/
+
+/cli/bin
+
+**/photon.log
+
+# Yarn
+**/.yarn
+**/.pnpm
+**/.node_modules
+**/.pnpm-lock.yaml
+.npmrc
+
+# Rust
+**/target/
+
+**/dist/
+
+# rpc
+/rpc/node_modules/
+/rpc/dist/
+/rpc/lib/
+/rpc/lookUpTable.txt
+/rpc/test-ledger/
+
+**/yarn-error.log
+
+**/lookUpTable.txt
+
+# other
+/anchor_programs/build/*
+/anchor_programs/Light_Circuits/build/circuits/ptau17
+/system-programs/lookUpTable.txt
+/system-programs/bin
+
+# light-circuits
+/light-circuits/node_modules/
+/light-circuits/lookUpTable.txt
+
+**/.env
+
+# Third-party dependencies
+/.local
+/.vscode
+
+**/.idea
+**/*.iml
+
+/**/dump.rdb
+
+/**/package-lock.json
+qodana.yaml
+
+node_modules
+
+**/.pnpm-store/
+**/.DS_Store
+/web/webapp/public/build-circuits
+
+/cli/.crates2.json
+/cli/.crates.toml
+test-programs/e2e-test/**/*.txt
+output.txt
+.nx/cache
+.nx/workspace-data

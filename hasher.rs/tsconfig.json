@@ -1,0 +1,29 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "compilerOptions": {
+      "target": "ES2022",
+      "noEmit": true,
+      "module": "ES2022",
+      "lib": ["dom", "ES2022"],
+      "types": ["vitest/globals"],
+      "declaration": true,
+      "declarationDir": "dist/types",
+      "strict": true,
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "composite": false,
+      "declarationMap": true,
+      "inlineSources": false,
+      "isolatedModules": true,
+      "noFallthroughCasesInSwitch": true,
+      "preserveWatchOutput": true,
+      "noUnusedLocals": false,
+      "noUnusedParameters": false,
+      "noImplicitAny": false,
+      
+    },
+    "exclude": ["node_modules"],
+    "include": ["src", "tests"]
+}
