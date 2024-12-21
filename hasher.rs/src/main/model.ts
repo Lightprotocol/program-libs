@@ -1,4 +1,4 @@
-import { BN } from "@coral-xyz/anchor";
+import BN from 'bn.js';
 
 export interface LightWasm {
   blakeHash(input: string | Uint8Array, hashLength: number): Uint8Array;
