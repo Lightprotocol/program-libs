@@ -18,8 +18,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  stateless-js:
-    name: stateless-js
+  js:
+    name: js tests
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
 
