@@ -1270,7 +1270,7 @@ mod test {
         }
 
         for element in vec.iter_mut() {
-            *element = *element * 2;
+            *element *= 2;
         }
 
         for (i, element) in vec.iter().enumerate() {
@@ -1491,6 +1491,7 @@ mod test {
     }
 
     #[test]
+    #[allow(clippy::unnecessary_cast)]
     fn test_cyclic_bounded_vec_first() {
         let mut vec = CyclicBoundedVec::with_capacity(500);
 
