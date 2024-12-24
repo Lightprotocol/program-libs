@@ -1,0 +1,23 @@
+[package]
+name = "light-utils"
+version = "1.1.0"
+description = "Common utility functions used in Light Protocol"
+repository = "https://github.com/Lightprotocol/light-protocol"
+license = "Apache-2.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0"
+ark-ff = "0.4"
+light-bounded-vec = { version = "1.1.0", path = "../bounded-vec" }
+light-hasher = { version = "1.1.0", path = "../hasher" }
+num-bigint = { version = "0.4", features = ["rand"] }
+thiserror = "1.0"
+solana-program = { version = "1.18.22" }
+ark-bn254 = "0.4.0"
+rand = "0.8"
+
+[dev-dependencies]
+bytemuck = "1.17"
+memoffset = "0.9"
+light-poseidon = "0.2.0"

@@ -956,6 +956,15 @@ dependencies = [
 [[package]]
 name = "light-bounded-vec"
 version = "1.1.0"
+dependencies = [
+ "bytemuck",
+ "memoffset",
+ "thiserror",
+]
+
+[[package]]
+name = "light-bounded-vec"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "47ced86d6f1b163a04d5d0be44f8bbeedb11d32f73af27812bbd144e0f1f1a42"
 dependencies = [
@@ -970,7 +979,7 @@ version = "1.2.0"
 dependencies = [
  "ark-bn254",
  "ark-ff",
- "light-bounded-vec",
+ "light-bounded-vec 1.1.0",
  "light-heap",
  "light-utils",
  "memoffset",
@@ -1011,7 +1020,7 @@ dependencies = [
  "anyhow",
  "ark-bn254",
  "ark-ff",
- "light-bounded-vec",
+ "light-bounded-vec 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "num-bigint",
  "rand 0.8.5",
  "solana-program",

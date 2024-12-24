@@ -17,9 +17,9 @@ solana = [
 [dependencies]
 borsh = "0.10"
 bytemuck = { version = "1.17", features = ["derive"] }
-light-bounded-vec = { version = "1.1.0" }
-light-hasher = { version = "1.1.0" }
-light-utils = { version = "1.1.0" }
+light-bounded-vec = { version = "1.1.0", path = "../bounded-vec" }
+light-hasher = { version = "1.1.0", path = "../hasher" }
+light-utils = { version = "1.1.0", path = "../utils" }
 memoffset = "0.9"
 solana-program = { version="=1.18.22", optional = true }
 thiserror = "1.0"
@@ -27,8 +27,8 @@ thiserror = "1.0"
 [dev-dependencies]
 ark-bn254 = "0.4"
 ark-ff = "0.4"
-light-merkle-tree-reference = { version = "1.1.0" }
-light-hash-set = { version = "1.1.0", features = ["solana"] }
+light-merkle-tree-reference = { version = "1.1.0", path = "../reference" }
+light-hash-set = { version = "1.1.0", features = ["solana"], path = "../hash-set" }
 rand = "0.8"
 solana-program = { version="=1.18.22" }
 spl-account-compression = { version = "0.3.0", default-features = false}

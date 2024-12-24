@@ -804,12 +804,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "hex"
-version = "0.4.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
-
-[[package]]
 name = "hmac"
 version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -962,8 +956,6 @@ dependencies = [
 [[package]]
 name = "light-bounded-vec"
 version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "47ced86d6f1b163a04d5d0be44f8bbeedb11d32f73af27812bbd144e0f1f1a42"
 dependencies = [
  "bytemuck",
  "memoffset",
@@ -972,16 +964,25 @@ dependencies = [
 ]
 
 [[package]]
-name = "light-concurrent-merkle-tree"
+name = "light-bounded-vec"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "44d84ffa991f38260b12f9fb60e7087aeb2d696513936eaee249e6f3e739651a"
+checksum = "47ced86d6f1b163a04d5d0be44f8bbeedb11d32f73af27812bbd144e0f1f1a42"
+dependencies = [
+ "bytemuck",
+ "memoffset",
+ "thiserror",
+]
+
+[[package]]
+name = "light-concurrent-merkle-tree"
+version = "1.1.0"
 dependencies = [
  "borsh 0.10.4",
  "bytemuck",
- "light-bounded-vec",
+ "light-bounded-vec 1.1.0",
  "light-hasher",
- "light-utils",
+ "light-utils 1.1.0",
  "memoffset",
  "solana-program",
  "thiserror",
@@ -993,9 +994,9 @@ version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f7cd392ed4df05a545dfb8a58ef72639fbba9dee7a0605b81c3370d02161932b"
 dependencies = [
- "light-bounded-vec",
+ "light-bounded-vec 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "light-heap",
- "light-utils",
+ "light-utils 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "memoffset",
  "num-bigint",
  "num-traits",
@@ -1005,8 +1006,6 @@ dependencies = [
 [[package]]
 name = "light-hasher"
 version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e932ed98282fa564ff4518416de688593a0f425c81d68cfa70e98da21a17a36f"
 dependencies = [
  "ark-bn254",
  "light-poseidon",
@@ -1029,20 +1028,15 @@ dependencies = [
 name = "light-indexed-merkle-tree"
 version = "1.1.0"
 dependencies = [
- "borsh 0.10.4",
- "hex",
- "light-bounded-vec",
+ "light-bounded-vec 1.1.0",
  "light-concurrent-merkle-tree",
  "light-hash-set",
  "light-hasher",
  "light-merkle-tree-reference",
- "light-utils",
- "memoffset",
+ "light-utils 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "num-bigint",
  "num-traits",
  "rand 0.8.5",
- "serde",
- "serde_json",
  "solana-program",
  "thiserror",
 ]
@@ -1050,12 +1044,10 @@ dependencies = [
 [[package]]
 name = "light-merkle-tree-reference"
 version = "1.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eb9153fd97f1bdba3ec1de6f4c4f20134c6e5e1285676bcb9ef5ebe493f41afa"
 dependencies = [
- "light-bounded-vec",
+ "light-bounded-vec 1.1.0",
  "light-hasher",
- "log",
+ "num-bigint",
  "thiserror",
 ]
 
@@ -1074,13 +1066,28 @@ dependencies = [
 [[package]]
 name = "light-utils"
 version = "1.1.0"
+dependencies = [
+ "anyhow",
+ "ark-bn254",
+ "ark-ff",
+ "light-bounded-vec 1.1.0",
+ "light-hasher",
+ "num-bigint",
+ "rand 0.8.5",
+ "solana-program",
+ "thiserror",
+]
+
+[[package]]
+name = "light-utils"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "19e2b5a4959cb0456b483a20b4f3930920949137c00e76b5d0f9bf8d701a3c6a"
 dependencies = [
  "anyhow",
  "ark-bn254",
  "ark-ff",
- "light-bounded-vec",
+ "light-bounded-vec 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "num-bigint",
  "rand 0.8.5",
  "solana-program",

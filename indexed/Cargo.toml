@@ -13,13 +13,11 @@ solana = [
 ]
 
 [dependencies]
-borsh = { version = "0.10" }
-light-bounded-vec = { version = "1.1.0" }
-light-hasher = { version = "1.1.0" }
-light-concurrent-merkle-tree = { version = "1.1.0" }
-light-merkle-tree-reference = { version = "1.1.0" }
+light-bounded-vec = { version = "1.1.0", path = "../bounded-vec" }
+light-hasher = { version = "1.1.0", path = "../hasher" }
+light-concurrent-merkle-tree = { version = "1.1.0", path = "../concurrent" }
+light-merkle-tree-reference = { version = "1.1.0", path = "../reference" }
 light-utils = { version = "1.1.0" }
-memoffset = "0.9"
 num-bigint = "0.4"
 num-traits = "0.2"
 
@@ -30,6 +28,3 @@ thiserror = "1.0"
 light-hash-set = { version = "1.1.0" }
 thiserror = "1.0"
 rand = "0.8"
-hex = "0.4"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
