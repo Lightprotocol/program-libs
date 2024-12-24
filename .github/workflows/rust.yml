@@ -5,7 +5,7 @@ on:
     paths:
       - ".cargo/**"
       - "**/*.rs"
-      - "**/Cargo.*"      
+      - "**/Cargo.*"
       - ".github/workflows/rust.yml"
   pull_request:
     branches:
@@ -47,13 +47,7 @@ jobs:
             ~/.cargo
             **/target
           key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
-      
+
       - name: Check formatting, lint & run tests
         run: |
-          for dir in concurrent bounded-vec hash-set indexed; do
-            cd $dir
-            cargo fmt -- --check
-            cargo clippy --all-targets -- -D warnings
-            cargo test --all-targets
-            cd ..
-          done
+          ./scripts/lint.sh
