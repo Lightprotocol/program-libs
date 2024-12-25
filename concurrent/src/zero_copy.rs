@@ -128,7 +128,7 @@ where
     }
 }
 
-impl<'a, H, const HEIGHT: usize> Deref for ConcurrentMerkleTreeZeroCopy<'a, H, HEIGHT>
+impl<H, const HEIGHT: usize> Deref for ConcurrentMerkleTreeZeroCopy<'_, H, HEIGHT>
 where
     H: Hasher,
 {
@@ -139,7 +139,7 @@ where
     }
 }
 
-impl<'a, H, const HEIGHT: usize> Drop for ConcurrentMerkleTreeZeroCopy<'a, H, HEIGHT>
+impl<H, const HEIGHT: usize> Drop for ConcurrentMerkleTreeZeroCopy<'_, H, HEIGHT>
 where
     H: Hasher,
 {
@@ -244,7 +244,7 @@ where
     }
 }
 
-impl<'a, H, const HEIGHT: usize> Deref for ConcurrentMerkleTreeZeroCopyMut<'a, H, HEIGHT>
+impl<H, const HEIGHT: usize> Deref for ConcurrentMerkleTreeZeroCopyMut<'_, H, HEIGHT>
 where
     H: Hasher,
 {
@@ -254,7 +254,7 @@ where
         &self.0.merkle_tree
     }
 }
-impl<'a, H, const HEIGHT: usize> DerefMut for ConcurrentMerkleTreeZeroCopyMut<'a, H, HEIGHT>
+impl<H, const HEIGHT: usize> DerefMut for ConcurrentMerkleTreeZeroCopyMut<'_, H, HEIGHT>
 where
     H: Hasher,
 {

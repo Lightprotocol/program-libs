@@ -644,6 +644,7 @@ where
 
     fn update_canopy(&mut self, first_changelog_index: usize, num_leaves: usize) {
         for i in 0..num_leaves {
+            println!("canopy: {:?}", self.canopy);
             let changelog_index = (first_changelog_index + i) % self.changelog.capacity();
             for (i, path_node) in self.changelog[changelog_index]
                 .path

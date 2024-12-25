@@ -214,7 +214,7 @@ mod test {
             assert_eq!(offset, 0);
             let vec: BoundedVec<i64> = read_bounded_vec_at(&buf, &mut offset, &metadata);
             for (i, element) in vec.iter().enumerate() {
-                assert_eq!(i as i64, -(*element as i64));
+                assert_eq!(i as i64, -*element);
             }
             assert_eq!(offset, 256);
 
@@ -223,7 +223,7 @@ mod test {
             assert_eq!(offset, 256);
             let vec: BoundedVec<u64> = read_bounded_vec_at(&buf, &mut offset, &metadata);
             for (i, element) in vec.iter().enumerate() {
-                assert_eq!(i as u64, *element as u64);
+                assert_eq!(i as u64, *element);
             }
             assert_eq!(offset, 512);
 

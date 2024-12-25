@@ -444,7 +444,7 @@ where
     }
 }
 
-impl<'a, H, I> DoubleEndedIterator for IndexingArrayIter<'a, H, I>
+impl<H, I> DoubleEndedIterator for IndexingArrayIter<'_, H, I>
 where
     H: Hasher,
     I: CheckedAdd + CheckedSub + Copy + Clone + PartialOrd + ToBytes + TryFrom<usize> + Unsigned,
