@@ -16,7 +16,7 @@ import simdInit, {
   blake2str as blake2strSimd,
   poseidon as poseidonSimd,
 } from "./wasm-simd/hasher_wasm_simd";
-import { BN } from "@coral-xyz/anchor";
+import BN from 'bn.js';
 
 function stringify(input: string[] | BN[]): string[] {
   if (input.length > 0 && input[0] instanceof BN) {

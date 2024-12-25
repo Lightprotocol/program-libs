@@ -18,10 +18,9 @@ const rolls = (fmt, platform, inline) => ({
     name: pkg.name,
     globals: {
       os: "os",
-      "@coral-xyz/anchor": "anchor",
     },
   },
-  external: ["os", "@coral-xyz/anchor"],
+  external: ["os"],
   plugins: [
     inline !== "slim" && wasm({ targetEnv: "auto-inline" }),
     typescript({

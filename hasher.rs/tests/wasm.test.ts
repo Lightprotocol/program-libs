@@ -1,6 +1,6 @@
 import { blake2b } from "@noble/hashes/blake2b";
 import { WasmFactory } from "..";
-import {BN} from "@coral-xyz/anchor";
+import BN from 'bn.js';
 
 function isNode() {
     return (
