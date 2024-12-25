@@ -42,9 +42,9 @@ fn program_insert<H>(
 where
     H: Hasher,
 {
-    for i in 0..NR_NULLIFIERS {
-        let nullifier = BigUint::from_be_bytes(nullifiers[i].as_slice());
-        queue.insert(&nullifier, merkle_tree.sequence_number())?;
+    for nullifier in nullifiers.iter() {
+        let nf = BigUint::from_be_bytes(nullifier.as_slice());
+        queue.insert(&nf, merkle_tree.sequence_number())?;
     }
     Ok(())
 }
@@ -57,6 +57,7 @@ enum RelayerUpdateError {
 
 /// A mock function which imitates a Merkle tree program instruction for
 /// inserting nullifiers from the queue to the tree.
+#[allow(clippy::too_many_arguments)]
 fn program_update<H>(
     // PDAs
     queue: &mut RefMut<'_, HashSet>,
@@ -132,7 +133,7 @@ where
             )
             .unwrap();
         let mut low_nullifier_proof = relayer_merkle_tree
-            .get_proof_of_leaf(usize::from(old_low_nullifier.index), false)
+            .get_proof_of_leaf(old_low_nullifier.index, false)
             .unwrap();
 
         // Update on-chain tree.
@@ -487,7 +488,7 @@ where
     // (Invalid) low nullifier.
     let low_nullifier = local_indexed_array.get(1).cloned().unwrap();
     let low_nullifier_next_value = local_indexed_array
-        .get(usize::from(low_nullifier.next_index))
+        .get(low_nullifier.next_index)
         .cloned()
         .unwrap()
         .value;
@@ -524,7 +525,7 @@ where
     // (Invalid) low nullifier.
     let low_nullifier = local_indexed_array.get(0).cloned().unwrap();
     let low_nullifier_next_value = local_indexed_array
-        .get(usize::from(low_nullifier.next_index))
+        .get(low_nullifier.next_index)
         .cloned()
         .unwrap()
         .value;
@@ -674,229 +675,6 @@ pub fn functional_non_inclusion_test() {
         .unwrap();
 }
 
-// /**
-//  *
-//  * Range Hash (value, next_index, next_value) -> need next value not next value index
-//  * Update of a range:
-//  * 1. Find the low element, low element points to the next hight element
-//  * 2. update low element with H (low_value, new_inserted_value_index, new_inserted_value)
-//  * 3. append the tree with H(new_inserted_value,index_of_next_value, next_value)
-//  *
-//  */
-// /// This test is generating a situation where the low element has to be patched.
-// /// Scenario:
-// /// 1. two parties start with the initialized indexing array
-// /// 2. both parties compute their values with the empty indexed Merkle tree state
-// /// 3. party one inserts first
-// /// 4. party two needs to patch the low element because the low element has changed
-// /// 5. party two inserts
-// Commented because the test is not working
-// TODO: figure out address Merkle tree changelog
-// #[test]
-// pub fn functional_changelog_test() {
-//     let address_1 = 30_u32.to_biguint().unwrap();
-//     let address_2 = 10_u32.to_biguint().unwrap();
-// cargo test -- --nocapture print_test_data
-#[test]
-#[ignore = "only used to generate test data"]
-pub fn print_test_data() {
-    let mut relayer_indexing_array = IndexedArray::<Poseidon, usize>::default();
-    relayer_indexing_array.init().unwrap();
-    let mut relayer_merkle_tree =
-        reference::IndexedMerkleTree::<Poseidon, usize>::new(4, 0).unwrap();
-    relayer_merkle_tree.init().unwrap();
-    let root = relayer_merkle_tree.root();
-    let root_bn = BigUint::from_bytes_be(&root);
-    println!("root {:?}", root_bn);
-    println!("indexed mt inited root {:?}", relayer_merkle_tree.root());
-
-    let address1 = 30_u32.to_biguint().unwrap();
-
-    let test_address: BigUint = BigUint::from_bytes_be(&[
-        171, 159, 63, 33, 62, 94, 156, 27, 61, 216, 203, 164, 91, 229, 110, 16, 230, 124, 129, 133,
-        222, 159, 99, 235, 50, 181, 94, 203, 105, 23, 82,
-    ]);
-
-    let non_inclusion_proof_0 = relayer_merkle_tree
-        .get_non_inclusion_proof(&test_address, &relayer_indexing_array)
-        .unwrap();
-
-    println!("non inclusion proof init {:?}", non_inclusion_proof_0);
-
-    relayer_merkle_tree
-        .append(&address1, &mut relayer_indexing_array)
-        .unwrap();
-
-    println!(
-        "indexed mt with one append {:?}",
-        relayer_merkle_tree.root()
-    );
-    let root_bn = BigUint::from_bytes_be(&relayer_merkle_tree.root());
-    println!("indexed mt with one append {:?}", root_bn);
-
-    let proof = relayer_merkle_tree.get_proof_of_leaf(2, true).unwrap();
-
-    let leaf = relayer_merkle_tree.merkle_tree.get_leaf(2).unwrap();
-    let leaf_bn = BigUint::from_bytes_be(&leaf);
-    println!("(30) leaf_hash[2] = {:?}", leaf_bn);
-
-    let subtrees = relayer_merkle_tree.merkle_tree.get_subtrees();
-    for subtree in subtrees {
-        let subtree_bn = BigUint::from_bytes_be(&subtree);
-        println!("subtree = {:?}", subtree_bn);
-    }
-
-    let res = relayer_merkle_tree.merkle_tree.verify(&leaf, &proof, 2);
-    println!("verify leaf 2 {:?}", res);
-
-    println!(
-        "indexed array state element 0 {:?}",
-        relayer_indexing_array.get(0).unwrap()
-    );
-    println!(
-        "indexed array state element 1 {:?}",
-        relayer_indexing_array.get(1).unwrap()
-    );
-    println!(
-        "indexed array state element 2 {:?}",
-        relayer_indexing_array.get(2).unwrap()
-    );
-
-    let address2 = 42_u32.to_biguint().unwrap();
-
-    let non_inclusion_proof = relayer_merkle_tree
-        .get_non_inclusion_proof(&address2, &relayer_indexing_array)
-        .unwrap();
-    println!("non inclusion proof address 2 {:?}", non_inclusion_proof);
-
-    relayer_merkle_tree
-        .append(&address2, &mut relayer_indexing_array)
-        .unwrap();
-
-    println!(
-        "indexed mt with two appends {:?}",
-        relayer_merkle_tree.root()
-    );
-    let root_bn = BigUint::from_bytes_be(&relayer_merkle_tree.root());
-    println!("indexed mt with two appends {:?}", root_bn);
-
-    println!(
-        "indexed array state element 0 {:?}",
-        relayer_indexing_array.get(0).unwrap()
-    );
-    println!(
-        "indexed array state element 1 {:?}",
-        relayer_indexing_array.get(1).unwrap()
-    );
-    println!(
-        "indexed array state element 2 {:?}",
-        relayer_indexing_array.get(2).unwrap()
-    );
-    println!(
-        "indexed array state element 3 {:?}",
-        relayer_indexing_array.get(3).unwrap()
-    );
-
-    let address3 = 12_u32.to_biguint().unwrap();
-
-    let non_inclusion_proof = relayer_merkle_tree
-        .get_non_inclusion_proof(&address3, &relayer_indexing_array)
-        .unwrap();
-
-    relayer_merkle_tree
-        .append(&address3, &mut relayer_indexing_array)
-        .unwrap();
-
-    println!(
-        "indexed mt with three appends {:?}",
-        relayer_merkle_tree.root()
-    );
-    let root_bn = BigUint::from_bytes_be(&relayer_merkle_tree.root());
-    println!("indexed mt with three appends {:?}", root_bn);
-
-    println!("non inclusion proof address 3 {:?}", non_inclusion_proof);
-    println!(
-        "indexed array state element 0 {:?}",
-        relayer_indexing_array.get(0).unwrap()
-    );
-    println!(
-        "indexed array state element 1 {:?}",
-        relayer_indexing_array.get(1).unwrap()
-    );
-    println!(
-        "indexed array state element 2 {:?}",
-        relayer_indexing_array.get(2).unwrap()
-    );
-    println!(
-        "indexed array state element 3 {:?}",
-        relayer_indexing_array.get(3).unwrap()
-    );
-    println!(
-        "indexed array state element 4 {:?}",
-        relayer_indexing_array.get(4).unwrap()
-    );
-
-    // // indexed array:
-    // // element: 0
-    // // value: 0
-    // // next_value: 30
-    // // index: 0
-    // // element: 1
-    // // value: 30
-    // // next_value: 0
-    // // index: 1
-    // // merkle tree:
-    // // leaf index: 0 = H(0, 1, 30) //Hash(value, next_index, next_value)
-    // // leaf index: 1 = H(30, 0, 0)
-    // let indexed_array_element_0 = relayer_indexing_array.get(0).unwrap();
-    // assert_eq!(indexed_array_element_0.value, 0_u32.to_biguint().unwrap());
-    // assert_eq!(indexed_array_element_0.next_index, 1);
-    // assert_eq!(indexed_array_element_0.index, 0);
-    // let indexed_array_element_1 = relayer_indexing_array.get(1).unwrap();
-    // assert_eq!(indexed_array_element_1.value, 30_u32.to_biguint().unwrap());
-    // assert_eq!(indexed_array_element_1.next_index, 0);
-    // assert_eq!(indexed_array_element_1.index, 1);
-
-    // let leaf_0 = relayer_merkle_tree.merkle_tree.leaf(0);
-    // let leaf_1 = relayer_merkle_tree.merkle_tree.leaf(1);
-    // assert_eq!(
-    //     leaf_0,
-    //     Poseidon::hashv(&[
-    //         &0_u32.to_biguint().unwrap().to_bytes_be(),
-    //         &1_u32.to_biguint().unwrap().to_bytes_be(),
-    //         &30_u32.to_biguint().unwrap().to_bytes_be()
-    //     ])
-    //     .unwrap()
-    // );
-    // assert_eq!(
-    //     leaf_1,
-    //     Poseidon::hashv(&[
-    //         &30_u32.to_biguint().unwrap().to_bytes_be(),
-    //         &0_u32.to_biguint().unwrap().to_bytes_be(),
-    //         &0_u32.to_biguint().unwrap().to_bytes_be()
-    //     ])
-    //     .unwrap()
-    // );
-
-    // let non_inclusion_proof = relayer_merkle_tree
-    //     .get_non_inclusion_proof(&10_u32.to_biguint().unwrap(), &relayer_indexing_array)
-    //     .unwrap();
-    // assert_eq!(non_inclusion_proof.root, relayer_merkle_tree.root());
-    // assert_eq!(
-    //     non_inclusion_proof.value,
-    //     bigint_to_be_bytes_array::<32>(&10_u32.to_biguint().unwrap()).unwrap()
-    // );
-    // assert_eq!(non_inclusion_proof.leaf_lower_range_value, [0; 32]);
-    // assert_eq!(
-    //     non_inclusion_proof.leaf_higher_range_value,
-    //     bigint_to_be_bytes_array::<32>(&30_u32.to_biguint().unwrap()).unwrap()
-    // );
-    // assert_eq!(non_inclusion_proof.leaf_index, 0);
-
-    // relayer_merkle_tree
-    //     .verify_non_inclusion_proof(&non_inclusion_proof)
-    //     .unwrap();
-}
 /// Performs conflicting Merkle tree updates where:
 ///
 /// 1. Party one inserts 30.
@@ -1110,7 +888,7 @@ fn perform_change_log_test<
     for (i, (address, indexed_array)) in addresses.iter().zip(indexed_arrays.iter_mut()).enumerate()
     {
         let (old_low_address, old_low_address_next_value) = indexed_array
-            .find_low_element_for_nonexistent(&address)
+            .find_low_element_for_nonexistent(address)
             .unwrap();
         let address_bundle = indexed_array
             .new_element_with_low_element_index(old_low_address.index, address)

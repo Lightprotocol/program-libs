@@ -1270,7 +1270,7 @@ mod test {
         }
 
         for element in vec.iter_mut() {
-            *element = *element * 2;
+            *element *= 2;
         }
 
         for (i, element) in vec.iter().enumerate() {
@@ -1492,13 +1492,13 @@ mod test {
 
     #[test]
     fn test_cyclic_bounded_vec_first() {
-        let mut vec = CyclicBoundedVec::with_capacity(500);
+        let mut vec = CyclicBoundedVec::<u32>::with_capacity(500);
 
         assert!(vec.first().is_none());
 
         for i in 0..1000 {
             vec.push(i);
-            assert_eq!(vec.first(), Some(&((i as u64).saturating_sub(499))));
+            assert_eq!(vec.first(), Some(&((i).saturating_sub(499))));
         }
     }
 

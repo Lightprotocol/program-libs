@@ -1,0 +1,53 @@
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".cargo/**"
+      - "**/*.rs"
+      - "**/Cargo.*"
+      - ".github/workflows/rust.yml"
+  pull_request:
+    branches:
+      - "*"
+    paths:
+      - "**/*.rs"
+      - "**/Cargo.*"
+      - ".github/workflows/rust.yml"
+
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+name: rust
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo
+            **/target
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Check formatting, lint & run tests
+        run: |
+          ./scripts/lint.sh
