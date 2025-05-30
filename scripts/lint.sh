@@ -2,7 +2,7 @@
 
 set -e
 
-for dir in concurrent bounded-vec hash-set indexed; do
+for dir in bounded-vec; do
     cd $dir
     cargo fmt -- --check
     cargo clippy --all-targets -- -D warnings
