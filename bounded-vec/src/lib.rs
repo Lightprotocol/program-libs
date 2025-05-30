@@ -38,9 +38,9 @@ impl From<BoundedVecError> for u32 {
 }
 
 #[cfg(feature = "solana")]
-impl From<BoundedVecError> for solana_program::program_error::ProgramError {
+impl From<BoundedVecError> for solana_program_error::ProgramError {
     fn from(e: BoundedVecError) -> Self {
-        solana_program::program_error::ProgramError::Custom(e.into())
+        solana_program_error::ProgramError::Custom(e.into())
     }
 }
 
