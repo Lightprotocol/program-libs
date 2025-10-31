@@ -25,7 +25,6 @@ pub enum BoundedVecError {
     InsufficientMemoryAllocated(usize, usize),
 }
 
-#[cfg(feature = "solana")]
 impl From<BoundedVecError> for u32 {
     fn from(e: BoundedVecError) -> u32 {
         match e {
